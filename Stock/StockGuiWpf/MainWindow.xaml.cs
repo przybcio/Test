@@ -22,11 +22,24 @@ namespace StockGuiWpf
 			set
 			{
 				itemsWrapper = value;
+				
 				RaisePropertyChangedEvent("ItemsWrapper");
+				
 			}
 		}
 
-
+		private StockRate lastStockRate;
+		public StockRate LastStockRate
+		{
+			get
+			{ return lastStockRate; }
+			set
+			{
+				lastStockRate = value;
+				RaisePropertyChangedEvent("LastStockRate");
+			}
+			
+		}
 
 		public MainWindow()
 		{
@@ -43,7 +56,7 @@ namespace StockGuiWpf
 			ItemsWrapper = new NotifyCollectionChangedWrapper<StockRate>(items);
 
 			// Create a timer that adds an element to the list every two seconds *on seperate threads*
-			timer = new System.Timers.Timer(30000);
+			timer = new System.Timers.Timer(1000);
 			timer.Elapsed +=
 				new System.Timers.ElapsedEventHandler
 					(
@@ -63,8 +76,10 @@ namespace StockGuiWpf
 		private void AddRate(object state)
 		{
 			if (ItemsWrapper.Count > 20)
-				ItemsWrapper.RemoveAt(0);
-			ItemsWrapper.Add(repository.GetRate());
+				ItemsWrapper.RemoveAt(ItemsWrapper.Count - 1);
+			ItemsWrapper.Insert(0, repository.GetRate());
+			if (ItemsWrapper.Count > 0)
+				LastStockRate = itemsWrapper[0];
 		}
 
 		#region INotifyPropertyChanged Members

@@ -2,54 +2,90 @@
 		x:Name="uxMainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Height="840"
+		Height="900"
 		Width="185"
 		DataContext="{Binding RelativeSource={RelativeSource Self}}"
 		xmlns:l="clr-namespace:StockGuiWpf.Infrastructure"
 		Loaded="uxMainWindow_Loaded">
 	<Window.Resources>
-		<Style TargetType="TextBlock" x:Key="myStyle">
-			<Setter Property="FontSize" Value="14" />
-			<Setter Property="HorizontalAlignment" Value="Center" />
-			<Setter Property="FontFamily" Value="Comic Sans MS"/>
-			<Setter Property="Foreground" Value="White" />
-			
+		<Style TargetType="TextBlock"
+			   x:Key="myStyle">
+			<Setter Property="FontSize"
+					Value="14" />
+			<Setter Property="HorizontalAlignment"
+					Value="Center" />
+			<Setter Property="FontFamily"
+					Value="Comic Sans MS" />
+			<Setter Property="Foreground"
+					Value="White" />
+
 		</Style>
 		<l:StringToColorConverter x:Key="myConverter" />
-		<Style TargetType="TextBlock" x:Key="myStyleTBlox" BasedOn="{StaticResource ResourceKey=myStyle}">
-			<Setter Property="FontSize" Value="10" 
-					/>
-			
+		<Style TargetType="TextBlock"
+			   x:Key="myStyleTBlox"
+			   BasedOn="{StaticResource ResourceKey=myStyle}">
+			<Setter Property="FontSize"
+					Value="10" />
+
 		</Style>
-		<Style TargetType="TextBlock" x:Key="myStyleTBloxEx"
+		<Style TargetType="TextBlock"
+			   x:Key="myStyleTBloxEx"
 			   BasedOn="{StaticResource ResourceKey=myStyleTBlox}">
-			<Setter Property="Foreground" Value="{Binding RateChange, Converter={StaticResource ResourceKey=myConverter}}" />
-			
+			<Setter Property="Foreground"
+					Value="{Binding RateChange, Converter={StaticResource ResourceKey=myConverter}}" />
+
+		</Style>
+		<Style TargetType="TextBlock"
+			   x:Key="myStyleTBloxExTop"
+			   BasedOn="{StaticResource ResourceKey=myStyleTBlox}">
+			<Setter Property="Foreground"
+					Value="{Binding LastStockRate.RateChange, Converter={StaticResource ResourceKey=myConverter}}" />
+
 		</Style>
 	</Window.Resources>
 
 
-	<DockPanel LastChildFill="True" Background="Black" >
-		<StackPanel Orientation="Horizontal" >
-			<ListBox ItemsSource="{Binding ItemsWrapper}" Background="Black">
+	<DockPanel LastChildFill="True"
+			   Background="Black">
+		<StackPanel Orientation="Vertical" >
+			
+			<StackPanel Orientation="Vertical" >
+				
+				<TextBlock Text="{Binding LastStockRate.Rate}"
+						   Style="{StaticResource ResourceKey=myStyle}">
+				</TextBlock>
+				<StackPanel Orientation="Horizontal">
+					<Border Padding="2">
+						<TextBlock  Text="{Binding LastStockRate.RateChange}"
+									Style="{StaticResource ResourceKey=myStyleTBloxExTop}">
+						</TextBlock>
+					</Border>
+					<Border Padding="2">
+						<TextBlock Text="{Binding LastStockRate.RateDate}"
+								   Style="{StaticResource ResourceKey=myStyleTBlox}" />
+					</Border>
+				</StackPanel>
+			</StackPanel>
+			<Expander>
+			<ListBox ItemsSource="{Binding ItemsWrapper}"
+					 Background="Black">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Orientation="Vertical">
-							<TextBlock Text="{Binding Rate}" 
-									   Style="{StaticResource ResourceKey=myStyle}"
-									   >
+							<TextBlock Text="{Binding Rate}"
+									   Style="{StaticResource ResourceKey=myStyle}">
 							</TextBlock>
 							<StackPanel Orientation="Horizontal">
-								<Border Padding="2" >
-									<TextBlock  Text="{Binding RateChange}" 
-										  Style="{StaticResource ResourceKey=myStyleTBloxEx}">
+								<Border Padding="2">
+									<TextBlock  Text="{Binding RateChange}"
+												Style="{StaticResource ResourceKey=myStyleTBloxEx}">
 										  <!--Foreground="{Binding RateChange, Converter={StaticResource ResourceKey=myConverter}}" >-->
 
 									</TextBlock>
-</Border>
-								<Border Padding="2" >
-									<TextBlock Text="{Binding RateDate}" 
-										  Style="{StaticResource ResourceKey=myStyleTBlox}" />
+								</Border>
+								<Border Padding="2">
+									<TextBlock Text="{Binding RateDate}"
+											   Style="{StaticResource ResourceKey=myStyleTBlox}" />
 								</Border>
 							</StackPanel>
 							<!--<TextBox Text="Jestem" Foreground="White" Background="Blue">
@@ -63,6 +99,7 @@
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
+			</Expander>
 		</StackPanel>
 	</DockPanel>
 </Window>
